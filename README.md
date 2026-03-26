@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# skillscheck 🚀
 
-## Getting Started
+**skillscheck** es una plataforma interactiva diseñada para que los desarrolladores junior puedan poner a prueba su lógica de programación y prepararse para las entrevistas técnicas sin complicaciones.
 
-First, run the development server:
+🔗 **[¡Prueba la plataforma en vivo aquí!](https://tu-enlace-hosteado-aqui.com)**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🎯 ¿Por qué skillscheck?
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+El proceso de contratación para perfiles junior puede ser abrumador y muchas veces las pruebas técnicas generan ansiedad. Esta herramienta nace con un objetivo claro: ofrecer un entorno de práctica directo al grano, amigable y sin presiones. 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Sin necesidad de crear cuentas, sin historiales de fallos y sin distracciones. Entras, programas y validas tu nivel para ganar confianza antes de la entrevista real.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Lo que vas a encontrar
 
-## Learn More
+* **Cero Fricción:** Olvídate de los formularios de registro. Es una experiencia de entrar y practicar al instante. Tu código, tu sesión, tus reglas.
+* **Editor Profesional Integrado:** Un entorno de escritura de código cómodo, fluido y con las herramientas visuales a las que ya estás acostumbrado en tu día a día.
+* **Validación en Tiempo Real:** Escribe tu solución y comprueba inmediatamente si tu algoritmo es correcto gracias a nuestro motor de evaluación instantánea.
+* **Retos a tu Medida:** Selecciona la dificultad del problema y enfréntate a desafíos reales, del mismo estilo de los que utilizan las empresas para evaluar talento.
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 ¿Cómo funciona?
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Elige la dificultad:** Selecciona el nivel del reto al que quieres enfrentarte.
+2. **Entiende el problema:** Lee la descripción del algoritmo y fíjate bien en los ejemplos de entrada y salida esperados.
+3. **Escribe tu código:** Utiliza el editor central para dar con la solución.
+4. **Ejecuta y valida:** Comprueba si tu lógica funciona y pasa las pruebas. Si fallas, ¡no pasa nada! Corrige y vuelve a intentarlo.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Construido para facilitar el camino del talento junior hacia su primera gran oportunidad laboral.*
