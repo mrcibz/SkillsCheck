@@ -30,11 +30,23 @@ jobs:
         with:
           fetch-depth: 1
 
+      # CUSTOMIZANDO LA ACCION (marc)
+      - name: Project Setup
+        run: | 
+          corepack enable pnpm
+          pnpm install
+          pnpm dev &
+
       - name: Run Claude Code
         id: claude
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          custom_instructions: |
+            The project is already set up with all dependencies installed. The server is already running at localhost:3000.
+            If needed, use the mcp__playwright  set of tools to launch a browser and interact with the app.
+            The available mcps are listed in .mcp.json at the project root.
 
           # This is an optional setting that allows Claude to read CI results on PRs
           additional_permissions: |
