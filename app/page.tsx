@@ -6,12 +6,12 @@ import AnimatedCodeBlock from "@/app/components/AnimatedCodeBlock";
 import HeroImageCarousel from "@/app/components/HeroImageCarousel";
 
 export const metadata: Metadata = {
-  title: "About — SkillsCheck",
+  title: "SkillsCheck — Practice Algorithms & Ace Your Interviews",
   description:
-    "Learn about SkillsCheck: a zero-friction platform for junior developers to practice algorithm challenges and prepare for technical interviews.",
+    "Master programming logic with SkillsCheck: a zero-friction, account-free platform for junior developers to practice algorithm challenges and prepare for technical interviews.",
 };
 
-export default function AboutPage() {
+export default function HomePage() {
   return (
     <div>
       {/* ── Section 1: Hero ── */}
