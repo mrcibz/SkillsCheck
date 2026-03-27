@@ -2,7 +2,7 @@
 
 **skillscheck** es una plataforma interactiva diseñada para que los desarrolladores junior puedan poner a prueba su lógica de programación y prepararse para las entrevistas técnicas sin complicaciones.
 
-🔗 **[¡Prueba la plataforma en vivo aquí!](https://tu-enlace-hosteado-aqui.com)**
+🔗 **[¡Prueba la plataforma en vivo aquí!](https://skills-check-lemon.vercel.app/)**
 
 ## 🎯 ¿Por qué skillscheck?
 
