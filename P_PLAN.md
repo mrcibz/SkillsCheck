@@ -21,6 +21,10 @@ Aplicaremos el patrón **"Lifting State Up"**. El componente Padre (`app/(worksp
 - `consolaOutput`: String con la respuesta del motor de ejecución.
 
 ## 4. Layout y UI (Distribución de la Pantalla Playground)
+
+> **Nota para la IA:** Por favor, revisa la imagen adjunta a este prompt para ver el wireframe exacto de la interfaz.
+> ![Wireframe del UI](playground_UI.png)
+
 El diseño usa CSS Grid/Flexbox ocupando el 100% de la pantalla (`h-screen`). Se divide en:
 
 * **Navbar (Top - Ocupa todo el ancho):**
@@ -46,6 +50,6 @@ Al pulsar "Run Code", se enviará el estado `codigo` y `lenguaje` a un endpoint 
 
 ### 🚀 Instrucciones para el Agente:
 1. Reestructura las carpetas usando Route Groups (`(marketing)` y `(workspace)`) y ajusta los layouts según el punto 2.
-2. Genera el esqueleto visual (Layout de la pantalla Playground) usando **Tailwind CSS** para que ocupe `100vh`.
+2. Genera el esqueleto visual (Layout de la pantalla Playground) usando **Tailwind CSS** para que ocupe `100vh`, basándote estrictamente en el esquema visual adjunto.
 3. Crea el componente Padre en `playground/page.tsx` y define los estados y las funciones mockeadas.
 4. Divide el código en los subcomponentes mencionados (`Navbar`, `ProblemInformation`, `ProblemStatement`, `CodeEditor`, `Console`).
