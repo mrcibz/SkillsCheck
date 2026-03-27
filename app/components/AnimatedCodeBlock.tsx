@@ -22,7 +22,6 @@ function pickLines(): Line[] {
   const base = properties.slice(0, 3);
   const extras = properties.slice(3);
   const extra = extras[Math.floor(Math.random() * extras.length)];
-  const extra2 = extras[Math.floor(Math.random() * extras.length)];
   const selected = [...base, extra];
 
   return selected.map((p) => ({
