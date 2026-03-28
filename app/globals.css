@@ -44,15 +44,9 @@ body {
 .lc-content sup { font-size: 0.75em; vertical-align: super; }
 .lc-content sub { font-size: 0.75em; vertical-align: sub; }
 
-/* Custom scrollbars (Webkit) */
-.lc-content::-webkit-scrollbar { width: 6px; height: 6px; }
-.lc-content::-webkit-scrollbar-track { background: transparent; }
-.lc-content::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
-.lc-content::-webkit-scrollbar-thumb:hover { background: #475569; }
-.lc-content::-webkit-scrollbar-corner { background: transparent; }
-
-/* Custom scrollbars (Firefox) */
-.lc-content { scrollbar-width: thin; scrollbar-color: #334155 transparent; }
+/* Hide scrollbar but keep scroll functional */
+.lc-content::-webkit-scrollbar { display: none; }
+.lc-content { scrollbar-width: none; }
 
 /* Scroll-reveal: hidden until IntersectionObserver adds .revealed */
 .scroll-reveal {
