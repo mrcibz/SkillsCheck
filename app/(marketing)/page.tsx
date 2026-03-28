@@ -1,8 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import ScrollReveal from "@/app/components/ScrollReveal";
-import AnimatedCodeBlock from "@/app/components/AnimatedCodeBlock";
-import HeroImageCarousel from "@/app/components/HeroImageCarousel";
+import ScrollReveal from "@/app/components/home/ScrollReveal";
+import AnimatedCodeBlock from "@/app/components/home/AnimatedCodeBlock";
+import HeroImageCarousel from "@/app/components/home/HeroImageCarousel";
 
 export const metadata: Metadata = {
   title: "SkillsCheck — Practice Algorithms & Ace Your Interviews",
@@ -32,7 +32,7 @@ export default function HomePage() {
               problem-solving skills — no sign-up required.
             </p>
             <Link
-              href="/"
+              href="/playground"
               className="mt-8 inline-flex h-14 w-fit items-center self-center rounded-full bg-blue-500 px-10 text-base font-semibold text-white transition-all hover:bg-blue-600 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 lg:self-start animate-fade-in-up animate-duration-500 animate-delay-700"
             >
               Start Practicing →
@@ -239,7 +239,7 @@ export default function HomePage() {
         </ScrollReveal>
         <ScrollReveal animation="animate-pulse-fade-in animate-duration-700" delay={500}>
           <Link
-            href="/"
+            href="/playground"
             className="mt-10 inline-flex h-14 items-center rounded-full bg-blue-500 px-10 text-base font-semibold text-white transition-all hover:bg-blue-600 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
           >
             Start Practicing →
