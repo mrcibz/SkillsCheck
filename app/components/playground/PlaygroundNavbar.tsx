@@ -12,6 +12,8 @@ type Props = {
   isLoading: boolean
   lenguaje: LanguageKey
   onLenguajeChange: (key: LanguageKey) => void
+  onRun: () => void
+  isRunning: boolean
 }
 
 export default function PlaygroundNavbar({
@@ -21,6 +23,8 @@ export default function PlaygroundNavbar({
   isLoading,
   lenguaje,
   onLenguajeChange,
+  onRun,
+  isRunning,
 }: Props) {
   return (
     <nav className="flex items-center justify-between px-4 border-b border-slate-700/60 bg-[#0d1b2e] h-full gap-4">
@@ -76,8 +80,19 @@ export default function PlaygroundNavbar({
           ))}
         </select>
 
-        <button className="flex items-center gap-1.5 rounded-lg border border-slate-600 px-4 py-1.5 text-xs font-semibold text-slate-300 transition-all hover:border-blue-500 hover:text-blue-400 whitespace-nowrap">
-          ▶ Run
+        <button
+          onClick={onRun}
+          disabled={isRunning}
+          className="flex items-center gap-1.5 rounded-lg border border-slate-600 px-4 py-1.5 text-xs font-semibold text-slate-300 transition-all hover:border-blue-500 hover:text-blue-400 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+        >
+          {isRunning ? (
+            <>
+              <span className="h-3 w-3 rounded-full border-2 border-slate-400/30 border-t-slate-300 animate-spin" />
+              Running…
+            </>
+          ) : (
+            "▶ Run"
+          )}
         </button>
       </div>
 

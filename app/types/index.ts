@@ -39,6 +39,7 @@ export type Language = {
   key: LanguageKey
   label: string
   monacoId: string
+  judge0Id: number
   starter: string
 }
 
@@ -47,24 +48,28 @@ export const LANGUAGES: Language[] = [
     key: 'javascript',
     label: 'JavaScript',
     monacoId: 'javascript',
-    starter: '/**\n * @param {*} input\n */\nfunction solution(input) {\n  // Write your solution here\n}\n',
+    judge0Id: 93,
+    starter: '/**\n * @param {*} input\n */\nfunction solution(input) {\n  // Write your solution here\n}\n\nconsole.log(solution(null))\n',
   },
   {
     key: 'python',
     label: 'Python',
     monacoId: 'python',
-    starter: 'def solution(input):\n    # Write your solution here\n    pass\n',
+    judge0Id: 92,
+    starter: 'def solution(input):\n    # Write your solution here\n    pass\n\nprint(solution(None))\n',
   },
   {
     key: 'cpp',
     label: 'C++',
     monacoId: 'cpp',
+    judge0Id: 54,
     starter: '#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    // Write your solution here\n    return 0;\n}\n',
   },
   {
     key: 'java',
     label: 'Java',
     monacoId: 'java',
-    starter: 'class Solution {\n    public void solve() {\n        // Write your solution here\n    }\n}\n',
+    judge0Id: 62,
+    starter: 'class Main {\n    public static void main(String[] args) {\n        // Write your solution here\n    }\n}\n',
   },
 ]

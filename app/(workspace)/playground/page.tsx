@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { LANGUAGES } from "@/app/types"
 import type { DifficultyKey, LanguageKey, Problema } from "@/app/types"
+import type { ExecuteResult } from "@/app/api/execute/route"
 import PlaygroundNavbar from "@/app/components/playground/PlaygroundNavbar"
 import ProblemInformation from "@/app/components/playground/ProblemInformation"
 import ProblemStatement from "@/app/components/playground/ProblemStatement"
@@ -16,11 +17,10 @@ export default function Playground() {
   const [dificultad, setDificultad] = useState<DifficultyKey>("warmup")
   const [lenguaje, setLenguaje] = useState<LanguageKey>("javascript")
   const [codigo, setCodigo] = useState(getStarter("javascript"))
-  const [consolaOutput, setConsolaOutput] = useState("")
   const [problema, setProblema] = useState<Problema | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-
-  void consolaOutput, setConsolaOutput
+  const [consoleOutput, setConsoleOutput] = useState<ExecuteResult | null>(null)
+  const [isRunning, setIsRunning] = useState(false)
 
   function handleLenguajeChange(key: LanguageKey) {
     setLenguaje(key)
@@ -31,15 +31,48 @@ export default function Playground() {
     setIsLoading(true)
     setProblema(null)
     setCodigo(getStarter(lenguaje))
+    setConsoleOutput(null)
     try {
       const res = await fetch(`/api/get-problem?difficulty=${dificultad}`)
       if (!res.ok) throw new Error("API error")
       const data: Problema = await res.json()
       setProblema(data)
     } catch {
-      // TODO: show toast error (Fase 4)
+      // TODO: show toast error
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  async function handleRunCode() {
+    setIsRunning(true)
+    setConsoleOutput(null)
+    try {
+      const res = await fetch("/api/execute", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ codigo, lenguaje }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setConsoleOutput({
+          output: data.error ?? "Execution service returned an error.",
+          status: "Error",
+          statusId: 0,
+          time: null,
+        })
+      } else {
+        setConsoleOutput(data as ExecuteResult)
+      }
+    } catch {
+      setConsoleOutput({
+        output: "Failed to connect to execution service.",
+        status: "Error",
+        statusId: 0,
+        time: null,
+      })
+    } finally {
+      setIsRunning(false)
     }
   }
 
@@ -67,11 +100,13 @@ export default function Playground() {
           isLoading={isLoading}
           lenguaje={lenguaje}
           onLenguajeChange={handleLenguajeChange}
+          onRun={handleRunCode}
+          isRunning={isRunning}
         />
 
         <div className="grid grid-cols-2 overflow-hidden">
 
-          {/* Left column: problem info (fixed) + statement (scrollable) */}
+          {/* Left column */}
           <div className="flex flex-col overflow-hidden border-r border-slate-700/50">
             <div className="h-[88px] shrink-0">
               <ProblemInformation problema={problema} />
@@ -85,7 +120,7 @@ export default function Playground() {
             </div>
           </div>
 
-          {/* Right column: editor (70%) + console (30%) */}
+          {/* Right column */}
           <div className="flex flex-col overflow-hidden">
             <div className="flex-[7] overflow-hidden">
               <CodeEditor
@@ -95,7 +130,11 @@ export default function Playground() {
               />
             </div>
             <div className="flex-[3] overflow-hidden">
-              <Console />
+              <Console
+                output={consoleOutput}
+                isRunning={isRunning}
+                onClear={() => setConsoleOutput(null)}
+              />
             </div>
           </div>
 
