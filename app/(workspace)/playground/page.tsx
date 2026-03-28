@@ -1,33 +1,43 @@
 "use client"
 
 import { useState } from "react"
-import type { DifficultyKey, Problema } from "@/app/types"
+import { LANGUAGES } from "@/app/types"
+import type { DifficultyKey, LanguageKey, Problema } from "@/app/types"
 import PlaygroundNavbar from "@/app/components/playground/PlaygroundNavbar"
 import ProblemInformation from "@/app/components/playground/ProblemInformation"
 import ProblemStatement from "@/app/components/playground/ProblemStatement"
 import CodeEditor from "@/app/components/playground/CodeEditor"
 import Console from "@/app/components/playground/Console"
 
+const getStarter = (key: LanguageKey) =>
+  LANGUAGES.find((l) => l.key === key)?.starter ?? ""
+
 export default function Playground() {
   const [dificultad, setDificultad] = useState<DifficultyKey>("warmup")
-  const [lenguaje, setLenguaje] = useState("javascript")
-  const [codigo, setCodigo] = useState("")
+  const [lenguaje, setLenguaje] = useState<LanguageKey>("javascript")
+  const [codigo, setCodigo] = useState(getStarter("javascript"))
   const [consolaOutput, setConsolaOutput] = useState("")
   const [problema, setProblema] = useState<Problema | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  void lenguaje, setLenguaje, codigo, setCodigo, consolaOutput, setConsolaOutput
+  void consolaOutput, setConsolaOutput
+
+  function handleLenguajeChange(key: LanguageKey) {
+    setLenguaje(key)
+    setCodigo(getStarter(key))
+  }
 
   async function handleGenerateProblem() {
     setIsLoading(true)
     setProblema(null)
+    setCodigo(getStarter(lenguaje))
     try {
       const res = await fetch(`/api/get-problem?difficulty=${dificultad}`)
       if (!res.ok) throw new Error("API error")
       const data: Problema = await res.json()
       setProblema(data)
     } catch {
-      // TODO: show toast error (Fase 3)
+      // TODO: show toast error (Fase 4)
     } finally {
       setIsLoading(false)
     }
@@ -50,15 +60,15 @@ export default function Playground() {
       {/* ── Desktop playground ── */}
       <div className="hidden md:grid h-screen overflow-hidden grid-rows-[56px_1fr] bg-[#0B1628]">
 
-        {/* Navbar — full width */}
         <PlaygroundNavbar
           dificultad={dificultad}
           onDificultadChange={setDificultad}
           onGenerate={handleGenerateProblem}
           isLoading={isLoading}
+          lenguaje={lenguaje}
+          onLenguajeChange={handleLenguajeChange}
         />
 
-        {/* Body — two columns */}
         <div className="grid grid-cols-2 overflow-hidden">
 
           {/* Left column: problem info (fixed) + statement (scrollable) */}
@@ -78,7 +88,11 @@ export default function Playground() {
           {/* Right column: editor (70%) + console (30%) */}
           <div className="flex flex-col overflow-hidden">
             <div className="flex-[7] overflow-hidden">
-              <CodeEditor />
+              <CodeEditor
+                codigo={codigo}
+                lenguaje={lenguaje}
+                onChange={setCodigo}
+              />
             </div>
             <div className="flex-[3] overflow-hidden">
               <Console />

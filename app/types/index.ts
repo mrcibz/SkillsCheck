@@ -30,3 +30,41 @@ export const DIFFICULTY_RANGES: DifficultyRange[] = [
   { key: 'intermediate', label: 'Intermedio',   sublabel: 'Normal',   lcDifficulty: 'Medium' },
   { key: 'advanced',     label: 'Difícil',      sublabel: 'Advanced', lcDifficulty: 'Hard'   },
 ]
+
+// ── Language ──────────────────────────────────────────────────────────────────
+
+export type LanguageKey = 'javascript' | 'python' | 'cpp' | 'java'
+
+export type Language = {
+  key: LanguageKey
+  label: string
+  monacoId: string
+  starter: string
+}
+
+export const LANGUAGES: Language[] = [
+  {
+    key: 'javascript',
+    label: 'JavaScript',
+    monacoId: 'javascript',
+    starter: '/**\n * @param {*} input\n */\nfunction solution(input) {\n  // Write your solution here\n}\n',
+  },
+  {
+    key: 'python',
+    label: 'Python',
+    monacoId: 'python',
+    starter: 'def solution(input):\n    # Write your solution here\n    pass\n',
+  },
+  {
+    key: 'cpp',
+    label: 'C++',
+    monacoId: 'cpp',
+    starter: '#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    // Write your solution here\n    return 0;\n}\n',
+  },
+  {
+    key: 'java',
+    label: 'Java',
+    monacoId: 'java',
+    starter: 'class Solution {\n    public void solve() {\n        // Write your solution here\n    }\n}\n',
+  },
+]

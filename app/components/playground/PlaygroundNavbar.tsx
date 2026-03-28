@@ -2,14 +2,16 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { DIFFICULTY_RANGES } from "@/app/types"
-import type { DifficultyKey } from "@/app/types"
+import { DIFFICULTY_RANGES, LANGUAGES } from "@/app/types"
+import type { DifficultyKey, LanguageKey } from "@/app/types"
 
 type Props = {
   dificultad: DifficultyKey
   onDificultadChange: (key: DifficultyKey) => void
   onGenerate: () => void
   isLoading: boolean
+  lenguaje: LanguageKey
+  onLenguajeChange: (key: LanguageKey) => void
 }
 
 export default function PlaygroundNavbar({
@@ -17,6 +19,8 @@ export default function PlaygroundNavbar({
   onDificultadChange,
   onGenerate,
   isLoading,
+  lenguaje,
+  onLenguajeChange,
 }: Props) {
   return (
     <nav className="flex items-center justify-between px-4 border-b border-slate-700/60 bg-[#0d1b2e] h-full gap-4">
@@ -63,13 +67,13 @@ export default function PlaygroundNavbar({
       {/* Right — language selector + run button (visual, Fase 3) */}
       <div className="flex items-center gap-2 flex-shrink-0">
         <select
+          value={lenguaje}
+          onChange={(e) => onLenguajeChange(e.target.value as LanguageKey)}
           className="rounded-lg bg-slate-800/70 px-3 py-1.5 text-xs font-semibold text-slate-300 border border-slate-700/50 outline-none cursor-pointer"
-          defaultValue="javascript"
         >
-          <option value="javascript">JavaScript</option>
-          <option value="python">Python</option>
-          <option value="cpp">C++</option>
-          <option value="java">Java</option>
+          {LANGUAGES.map((l) => (
+            <option key={l.key} value={l.key}>{l.label}</option>
+          ))}
         </select>
 
         <button className="flex items-center gap-1.5 rounded-lg border border-slate-600 px-4 py-1.5 text-xs font-semibold text-slate-300 transition-all hover:border-blue-500 hover:text-blue-400 whitespace-nowrap">
