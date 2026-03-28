@@ -53,3 +53,13 @@ Al pulsar "Run Code", se enviará el estado `codigo` y `lenguaje` a un endpoint 
 2. Genera el esqueleto visual (Layout de la pantalla Playground) usando **Tailwind CSS** para que ocupe `100vh`, basándote estrictamente en el esquema visual adjunto.
 3. Crea el componente Padre en `playground/page.tsx` y define los estados y las funciones mockeadas.
 4. Divide el código en los subcomponentes mencionados (`Navbar`, `ProblemInformation`, `ProblemStatement`, `CodeEditor`, `Console`).
+
+### Para el Editor de Código (CodeEditor.tsx)
+* **Librería:** `@monaco-editor/react`
+* **Por qué:** Es el motor que da vida a VS Code. Nos proporciona resaltado de sintaxis, autocompletado y minimapa sin configuraciones complejas.
+* **Cómo se usa:** El componente hijo `CodeEditor` renderizará el componente `<Editor />` de esta librería. Recibirá mediante *props* el `lenguaje` (para adaptar los colores) y el `codigo` (el valor actual). Cuando el usuario escriba, ejecutará un evento `onChange` que llamará a la función del Padre para actualizar el estado global del código.
+
+### Para la Consola (Console.tsx)
+* **Librería UI:** Ninguna externa. Será un `div` nativo estilizado con **Tailwind CSS** (fondo `bg-black`, texto `text-green-400`, fuente monospace).
+* **Motor de Ejecución (Backend):** Usaremos la API pública/privada de **Judge0** (o en su defecto, la API de **Piston**).
+* **Cómo se usa:** Cuando el Padre haga el `POST` al endpoint interno `/api/execute`, este endpoint enviará el string del código a Judge0. Judge0 devolverá un objeto con el `stdout` (si el código funcionó) o el `stderr` (si hubo error). Ese texto viajará de vuelta al Padre, actualizará el estado `consolaOutput`, y el componente hijo `Console` simplemente lo imprimirá en pantalla.
