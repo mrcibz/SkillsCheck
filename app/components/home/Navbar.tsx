@@ -14,7 +14,7 @@ export default function Navbar() {
         {/* Botón a la derecha (Siempre visible en móvil y PC) */}
         <div className="flex items-center">
           <Link
-            href="/" /* Cámbialo a "/practice" si tienes una ruta específica */
+            href="/playground"
             className="inline-flex h-9 items-center rounded-full bg-blue-500 px-5 text-sm font-semibold text-white transition-all hover:bg-blue-600 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
           >
             Practice

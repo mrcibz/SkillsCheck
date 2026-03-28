@@ -14,6 +14,40 @@ body {
   color: var(--color-foreground);
 }
 
+/* ── LeetCode problem statement HTML ─────────────────────────────────────── */
+.lc-content { color: #cbd5e1; font-size: 0.875rem; line-height: 1.7; }
+.lc-content p { margin-bottom: 0.875rem; }
+.lc-content strong { color: #f1f5f9; font-weight: 600; }
+.lc-content em { font-style: italic; }
+.lc-content code {
+  font-family: var(--font-mono);
+  background: #1e293b;
+  color: #93c5fd;
+  padding: 0.1em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.8125rem;
+}
+.lc-content pre {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+.lc-content pre code { background: transparent; padding: 0; color: #e2e8f0; }
+.lc-content ul, .lc-content ol { padding-left: 1.5rem; margin-bottom: 0.875rem; }
+.lc-content ul { list-style-type: disc; }
+.lc-content ol { list-style-type: decimal; }
+.lc-content li { margin-bottom: 0.25rem; }
+.lc-content img { max-width: 100%; border-radius: 0.375rem; margin: 0.5rem 0; }
+.lc-content sup { font-size: 0.75em; vertical-align: super; }
+.lc-content sub { font-size: 0.75em; vertical-align: sub; }
+
+/* Hide scrollbar but keep scroll functional */
+.lc-content::-webkit-scrollbar { display: none; }
+.lc-content { scrollbar-width: none; }
+
 /* Scroll-reveal: hidden until IntersectionObserver adds .revealed */
 .scroll-reveal {
   opacity: 0;
