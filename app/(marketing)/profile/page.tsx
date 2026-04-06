@@ -51,6 +51,18 @@ export default function ProfilePage() {
   const validatedCount = entries.filter((e) => e.validation.validated).length
   const pendingCount = entries.length - validatedCount
 
+  // Average score across validated entries that expose a numeric score.
+  const scoredEntries = entries.filter(
+    (e) => e.validation.validated && e.validation.score !== undefined
+  )
+  const averageScore =
+    scoredEntries.length > 0
+      ? Math.round(
+          scoredEntries.reduce((sum, e) => sum + (e.validation.score ?? 0), 0) /
+            scoredEntries.length
+        )
+      : null
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Header */}
@@ -68,6 +80,23 @@ export default function ProfilePage() {
             </p>
           )}
         </div>
+        {averageScore !== null && (
+          <div className="flex items-center gap-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 px-5 py-3">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-400">
+                Average score
+              </p>
+              <p className="mt-1 text-xs text-slate-400">
+                Across {scoredEntries.length} validated{" "}
+                {scoredEntries.length === 1 ? "challenge" : "challenges"}
+              </p>
+            </div>
+            <p className="text-4xl font-bold text-white leading-none">
+              {averageScore}
+              <span className="text-base font-medium text-slate-500">/100</span>
+            </p>
+          </div>
+        )}
         {entries.length > 0 && (
           <button
             onClick={() => setClearOpen(true)}
