@@ -31,7 +31,10 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url)
   const diffKey = searchParams.get('difficulty') ?? 'warmup'
-  const range = DIFFICULTY_RANGES.find((d) => d.key === diffKey) ?? DIFFICULTY_RANGES[0]
+  const isAny = diffKey === 'any'
+  const range = isAny
+    ? null
+    : DIFFICULTY_RANGES.find((d) => d.key === diffKey) ?? DIFFICULTY_RANGES[0]
 
   let problems: LCProblem[]
   try {
@@ -45,12 +48,14 @@ export async function GET(request: Request) {
     )
   }
 
-  const filtered = problems.filter((p) => {
-    if (p.difficulty !== range.lcDifficulty) return false
-    if (range.minAcRate !== undefined && p.acRate < range.minAcRate) return false
-    if (range.maxAcRate !== undefined && p.acRate >= range.maxAcRate) return false
-    return true
-  })
+  const filtered = range
+    ? problems.filter((p) => {
+        if (p.difficulty !== range.lcDifficulty) return false
+        if (range.minAcRate !== undefined && p.acRate < range.minAcRate) return false
+        if (range.maxAcRate !== undefined && p.acRate >= range.maxAcRate) return false
+        return true
+      })
+    : problems
 
   if (filtered.length === 0) {
     return NextResponse.json(

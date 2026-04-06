@@ -1,4 +1,5 @@
 import type { Problema } from "@/app/types"
+import { getCompanyForSlug } from "@/app/lib/challengeMeta"
 
 type Props = {
   problema: Problema | null
@@ -34,10 +35,12 @@ export default function ProblemInformation({ problema }: Props) {
     )
   }
 
+  const company = getCompanyForSlug(problema.slug)
+
   return (
     <div className="flex h-full flex-col justify-center gap-2 px-6 border-b border-slate-700/50 bg-[#0d1b2e]">
-      <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">
-        Current Problem
+      <span className="text-xs font-semibold uppercase tracking-widest text-blue-400">
+        Offered by {company}
       </span>
       <div className="flex items-center gap-2 min-w-0">
         <span className="text-sm font-bold text-white truncate">

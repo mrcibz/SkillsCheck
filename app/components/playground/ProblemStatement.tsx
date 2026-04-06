@@ -30,7 +30,7 @@ export default function ProblemStatement({ problema, isLoading, onGenerate }: Pr
           </p>
         </div>
         <button
-          onClick={onGenerate}
+          onClick={() => onGenerate()}
           className="mt-2 rounded-lg bg-blue-500 px-6 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-600 hover:scale-105"
         >
           Generate New Problem

@@ -1,17 +1,26 @@
 "use client"
 
-import { useState } from "react"
-import { LANGUAGES } from "@/app/types"
-import type { DifficultyKey, LanguageKey, Problema } from "@/app/types"
+import { useState, useEffect } from "react"
+import { LANGUAGES, DIFFICULTY_RANGES } from "@/app/types"
+import type { DifficultyKey, LanguageKey, Problema, ProfileEntry } from "@/app/types"
 import type { ExecuteResult } from "@/app/api/execute/route"
 import PlaygroundNavbar from "@/app/components/playground/PlaygroundNavbar"
 import ProblemInformation from "@/app/components/playground/ProblemInformation"
 import ProblemStatement from "@/app/components/playground/ProblemStatement"
 import CodeEditor from "@/app/components/playground/CodeEditor"
 import Console from "@/app/components/playground/Console"
+import { getCompanyForSlug } from "@/app/lib/challengeMeta"
+import { saveProfileEntry } from "@/app/lib/profileStorage"
 
 const getStarter = (key: LanguageKey) =>
   LANGUAGES.find((l) => l.key === key)?.starter ?? ""
+
+// Accepted ?difficulty= values in the URL: any known DifficultyKey or the
+// pseudo-key "any" (random across all difficulties, resolved by the API).
+type DifficultyParam = DifficultyKey | "any"
+
+const isValidDifficultyParam = (value: string | null): value is DifficultyParam =>
+  value === "any" || (!!value && DIFFICULTY_RANGES.some((d) => d.key === value))
 
 export default function Playground() {
   const [dificultad, setDificultad] = useState<DifficultyKey>("warmup")
@@ -21,19 +30,22 @@ export default function Playground() {
   const [isLoading, setIsLoading] = useState(false)
   const [consoleOutput, setConsoleOutput] = useState<ExecuteResult | null>(null)
   const [isRunning, setIsRunning] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitNotice, setSubmitNotice] = useState<string | null>(null)
 
   function handleLenguajeChange(key: LanguageKey) {
     setLenguaje(key)
     setCodigo(getStarter(key))
   }
 
-  async function handleGenerateProblem() {
+  async function handleGenerateProblem(overrideDifficulty?: DifficultyParam) {
+    const target: DifficultyParam = overrideDifficulty ?? dificultad
     setIsLoading(true)
     setProblema(null)
     setCodigo(getStarter(lenguaje))
     setConsoleOutput(null)
     try {
-      const res = await fetch(`/api/get-problem?difficulty=${dificultad}`)
+      const res = await fetch(`/api/get-problem?difficulty=${target}`)
       if (!res.ok) throw new Error("API error")
       const data: Problema = await res.json()
       setProblema(data)
@@ -43,6 +55,27 @@ export default function Playground() {
       setIsLoading(false)
     }
   }
+
+  // On mount: honour ?difficulty=<key> from the query string (used by the
+  // profile empty-state suggestions) and auto-load a problem. We pass the
+  // difficulty explicitly to avoid reading stale state before the setDificultad
+  // update is committed.
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const params = new URLSearchParams(window.location.search)
+    const raw = params.get("difficulty")
+    if (!isValidDifficultyParam(raw)) return
+
+    // "any" is not a real difficulty — the API resolves it to a random problem
+    // across all levels. Keep the pill state on the current default and just
+    // fire the fetch with the override.
+    if (raw !== "any") {
+      setDificultad(raw)
+    }
+    handleGenerateProblem(raw)
+    // Mount-only effect by design.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   async function handleRunCode() {
     setIsRunning(true)
@@ -76,6 +109,29 @@ export default function Playground() {
     }
   }
 
+  async function handleSubmit() {
+    if (!problema) return
+    setIsSubmitting(true)
+    try {
+      const entry: ProfileEntry = {
+        slug: problema.slug,
+        title: problema.title,
+        difficulty: problema.difficulty,
+        company: getCompanyForSlug(problema.slug),
+        submittedAt: Date.now(),
+        code: codigo,
+        language: lenguaje,
+      }
+      saveProfileEntry(entry)
+      setSubmitNotice("Your solution has been sent for validation")
+      setTimeout(() => setSubmitNotice(null), 3500)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const canSubmit = !!problema && codigo.trim().length > 0
+
   return (
     <>
       {/* ── Mobile blocker ── */}
@@ -102,6 +158,9 @@ export default function Playground() {
           onLenguajeChange={handleLenguajeChange}
           onRun={handleRunCode}
           isRunning={isRunning}
+          onSubmit={handleSubmit}
+          canSubmit={canSubmit}
+          isSubmitting={isSubmitting}
         />
 
         <div className="grid grid-cols-2 overflow-hidden">
@@ -139,6 +198,18 @@ export default function Playground() {
           </div>
 
         </div>
+
+        {/* Submit confirmation toast */}
+        {submitNotice && (
+          <div className="pointer-events-none fixed bottom-6 left-1/2 -translate-x-1/2 z-50 animate-fade-in">
+            <div className="flex items-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-500/15 px-4 py-2 text-sm font-medium text-emerald-200 shadow-lg backdrop-blur">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
+                <path fillRule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.415l-7.2 7.25a1 1 0 0 1-1.42.005l-3.8-3.8a1 1 0 1 1 1.415-1.414l3.09 3.09 6.494-6.54a1 1 0 0 1 1.415-.006Z" clipRule="evenodd" />
+              </svg>
+              {submitNotice}
+            </div>
+          </div>
+        )}
       </div>
     </>
   )
