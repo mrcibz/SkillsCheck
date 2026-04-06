@@ -11,6 +11,35 @@ export type Problema = {
   content: string | null  // HTML completo del enunciado, null si no disponible
 }
 
+// ── Profile / Validation ──────────────────────────────────────────────────────
+
+export type ChallengeStatus = 'not_started' | 'submitted' | 'validated'
+
+/**
+ * Deterministic "validation" of a challenge, derived from its slug.
+ * See app/lib/challengeMeta.ts → getValidationForSlug.
+ */
+export type ValidationResult = {
+  validated: boolean
+  score?: number     // 0-100, only when validated
+  feedback?: string  // only when validated
+}
+
+/**
+ * Entry persisted in localStorage after the user submits a solution.
+ * We only store "submitted" entries; the "validated" status is derived at
+ * read-time from the deterministic mapping in challengeMeta.
+ */
+export type ProfileEntry = {
+  slug: string
+  title: string
+  difficulty: LCDifficulty
+  company: string
+  submittedAt: number
+  code: string
+  language: LanguageKey
+}
+
 // ── Difficulty ────────────────────────────────────────────────────────────────
 
 export type DifficultyKey = 'warmup' | 'junior' | 'intermediate' | 'advanced'
@@ -25,10 +54,10 @@ export type DifficultyRange = {
 }
 
 export const DIFFICULTY_RANGES: DifficultyRange[] = [
-  { key: 'warmup',       label: 'Principiante', sublabel: 'Warm-up',  lcDifficulty: 'Easy',   minAcRate: 55 },
+  { key: 'warmup',       label: 'Beginner',     sublabel: 'Warm-up',  lcDifficulty: 'Easy',   minAcRate: 55 },
   { key: 'junior',       label: 'Junior',       sublabel: 'Easy',     lcDifficulty: 'Easy',   maxAcRate: 55 },
-  { key: 'intermediate', label: 'Intermedio',   sublabel: 'Normal',   lcDifficulty: 'Medium' },
-  { key: 'advanced',     label: 'Difícil',      sublabel: 'Advanced', lcDifficulty: 'Hard'   },
+  { key: 'intermediate', label: 'Intermediate', sublabel: 'Normal',   lcDifficulty: 'Medium' },
+  { key: 'advanced',     label: 'Advanced',     sublabel: 'Hard',     lcDifficulty: 'Hard'   },
 ]
 
 // ── Language ──────────────────────────────────────────────────────────────────
