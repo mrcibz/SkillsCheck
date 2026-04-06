@@ -56,13 +56,37 @@ export default function Playground() {
     }
   }
 
-  // On mount: honour ?difficulty=<key> from the query string (used by the
-  // profile empty-state suggestions) and auto-load a problem. We pass the
-  // difficulty explicitly to avoid reading stale state before the setDificultad
-  // update is committed.
+  async function loadProblemBySlug(slug: string) {
+    setIsLoading(true)
+    setProblema(null)
+    setCodigo(getStarter(lenguaje))
+    setConsoleOutput(null)
+    try {
+      const res = await fetch(`/api/get-problem?slug=${encodeURIComponent(slug)}`)
+      if (!res.ok) throw new Error("API error")
+      const data: Problema = await res.json()
+      setProblema(data)
+    } catch {
+      // TODO: show toast error
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // On mount: honour ?slug=<...> (deep-link from /challenges) or
+  // ?difficulty=<key> (used by the profile empty-state suggestions) and
+  // auto-load a problem. We pass the difficulty explicitly to avoid reading
+  // stale state before the setDificultad update is committed.
   useEffect(() => {
     if (typeof window === "undefined") return
     const params = new URLSearchParams(window.location.search)
+
+    const slug = params.get("slug")
+    if (slug) {
+      loadProblemBySlug(slug)
+      return
+    }
+
     const raw = params.get("difficulty")
     if (!isValidDifficultyParam(raw)) return
 

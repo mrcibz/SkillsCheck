@@ -30,6 +30,36 @@ export async function GET(request: Request) {
   }
 
   const { searchParams } = new URL(request.url)
+  const slugParam = searchParams.get('slug')
+
+  // Slug branch: caller wants a specific problem (used by /challenges).
+  // Skip the random-pick over the cached list and go straight to the
+  // detail endpoint, which already needs session auth for `content`.
+  if (slugParam) {
+    try {
+      const credential = new Credential()
+      await credential.init(process.env.LEETCODE_SESSION)
+      const lc = new LeetCode(credential)
+      const detail = await lc.problem(slugParam)
+      const resultado: Problema = {
+        title: detail.title,
+        difficulty: detail.difficulty as LCDifficulty,
+        tags: detail.topicTags?.map((t) => t.name) ?? [],
+        slug: detail.titleSlug,
+        url: `https://leetcode.com/problems/${detail.titleSlug}/`,
+        content: detail.content ?? null,
+      }
+      return NextResponse.json(resultado)
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Unknown error'
+      console.error('[get-problem] Slug fetch failed:', msg)
+      return NextResponse.json(
+        { error: `Could not fetch problem "${slugParam}": ${msg}` },
+        { status: 502 }
+      )
+    }
+  }
+
   const diffKey = searchParams.get('difficulty') ?? 'warmup'
   const isAny = diffKey === 'any'
   const range = isAny
