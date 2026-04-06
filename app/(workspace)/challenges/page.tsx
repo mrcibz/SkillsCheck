@@ -251,18 +251,6 @@ export default function ChallengesPage() {
                     )}
                   </div>
                 )}
-                <div className="mt-auto flex items-center justify-between pt-4 text-[11px] text-slate-500">
-                  <span>Acceptance {p.acRate.toFixed(1)}%</span>
-                  {p.validation.validated ? (
-                    <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-semibold text-emerald-300">
-                      Validated · {p.validation.score}
-                    </span>
-                  ) : (
-                    <span className="rounded-full border border-slate-600 bg-slate-800/60 px-2 py-0.5 font-semibold text-slate-400">
-                      Pending review
-                    </span>
-                  )}
-                </div>
               </a>
             ))}
           </div>
