@@ -130,6 +130,15 @@ export default function PlaygroundNavbar({
 
         {/* Plain <a> so /playground fully unmounts — see comment on logo above. */}
         <a
+          href="/challenges"
+          title="Browse challenges by company"
+          className="rounded-lg border border-slate-600 px-3 py-1.5 text-xs font-semibold text-slate-300 transition-all hover:border-blue-500 hover:text-blue-400 whitespace-nowrap"
+        >
+          Browse
+        </a>
+
+        {/* Plain <a> so /playground fully unmounts — see comment on logo above. */}
+        <a
           href="/profile"
           title="View your profile"
           className="flex items-center justify-center rounded-lg border border-slate-600 h-[30px] w-[30px] text-slate-300 transition-all hover:border-blue-500 hover:text-blue-400"
